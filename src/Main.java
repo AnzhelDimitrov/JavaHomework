@@ -3,12 +3,7 @@ import library.Library;
 import library.Magazine;
 import library.Book;
 
-import sortingalgorithms.InsertionSortVariation;
-import sortingalgorithms.InsertionSort;
-import sortingalgorithms.SelectionSort;
-import sortingalgorithms.BubbleSort;
-import sortingalgorithms.SortingPerformance;
-import sortingalgorithms.SortingAlgorithm;
+import sortingalgorithms.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -52,7 +47,7 @@ public class Main {
         SortingPerformance analyzer = new SortingPerformance();
 
         Collection<SortingAlgorithm> algorithms = List.of(new InsertionSortVariation(), new InsertionSort(),
-                new BubbleSort(), new SelectionSort());
+                new BubbleSort(), new SelectionSort(), new MergeSort());
 
 
         int[] arr1 = {3, 1, 4, 1, 5, 9, 2};
