@@ -13,7 +13,7 @@ import java.util.Random;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Magazine magazine1 = new Magazine("Magazine1", 2, true, 2, 43);
         Magazine magazine2 = new Magazine("Magazine2", 3, true, 5, 23);
         Magazine magazine3 = new Magazine("Magazine3", 4, false, 0, 4);
