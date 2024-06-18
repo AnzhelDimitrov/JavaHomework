@@ -2,7 +2,23 @@ package sortingalgorithms;
 
 import java.util.Arrays;
 
-public class MergeSort implements SortingAlgorithm {
+public class MergeSort implements SortingAlgorithm, Runnable {
+    private int[] arr;
+
+    public MergeSort() {
+    }
+
+
+    public MergeSort(int[] arr) {
+        this.arr = arr;
+    }
+
+    @Override
+    public void run() {
+        sort(arr);
+    }
+
+    @Override
     public void sort(int[] arr) {
         if (arr.length <= 1) {
             return;
@@ -12,11 +28,26 @@ public class MergeSort implements SortingAlgorithm {
         int[] left = Arrays.copyOfRange(arr, 0, mid);
         int[] right = Arrays.copyOfRange(arr, mid, arr.length);
 
-        sort(left);
-        sort(right);
+        MergeSort leftSort = new MergeSort(left);
+        MergeSort rightSort = new MergeSort(right);
+
+        Thread leftThread = new Thread(leftSort);
+        Thread rightThread = new Thread(rightSort);
+
+        leftThread.start();
+        rightThread.start();
+
+        try {
+            leftThread.join();
+            rightThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
 
         merge(arr, left, right);
     }
+
     private void merge(int[] result, int[] left, int[] right) {
         int i = 0, j = 0, k = 0;
         while (i < left.length && j < right.length) {
@@ -26,7 +57,7 @@ public class MergeSort implements SortingAlgorithm {
                 result[k++] = right[j++];
             }
         }
-        // Copy remaining elements (if any)
+
         while (i < left.length) {
             result[k++] = left[i++];
         }
