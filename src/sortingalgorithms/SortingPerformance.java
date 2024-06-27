@@ -1,14 +1,16 @@
 package sortingalgorithms;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SortingPerformance {
 
     public SortingAlgorithm findFastestSortingAlgorithm(Collection<SortingAlgorithm> algorithms,
                                                         int[] arr) throws InterruptedException {
         Map<SortingAlgorithm, Long> results = new HashMap<>();
+        List<Thread> threads = new ArrayList<>();
+        Lock lock = new ReentrantLock();
 
         for (SortingAlgorithm algorithm : algorithms) {
             Thread thread = new Thread(() -> {
@@ -18,13 +20,22 @@ public class SortingPerformance {
                 long endTime = System.nanoTime();
                 long duration = endTime - startTime;
 
-                synchronized (results) {
+                double durationInSeconds = duration / 1_000_000_000.0;
+                System.out.println(algorithm.getClass().getSimpleName() + " took " + durationInSeconds + " seconds.");
+
+                lock.lock();
+                try {
                     results.put(algorithm, duration);
+                } finally {
+                    lock.unlock();
                 }
             });
 
+            threads.add(thread);
             thread.start();
+        }
 
+        for (Thread thread : threads) {
             thread.join();
         }
 
